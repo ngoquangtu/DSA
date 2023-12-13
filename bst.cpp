@@ -27,8 +27,10 @@ Node* BST::getRoot() const {
     return root;
 }
 
-void BST::findDuplicates(unordered_map<string, string>& seen) const {
-    findDuplicates(root, seen);
+vector<string> BST::findDuplicates(const string& key) const {
+    vector<string> duplicates;
+    findDuplicates(root, key, duplicates);
+    return duplicates;
 }
 
 void BST::saveToFile(const string& filename) {
@@ -54,7 +56,8 @@ Node* BST::remove(Node* node, const string& key) {
     if (node == nullptr) return node;
     if (key < node->key) node->left = remove(node->left, key);
     else if (key > node->key) node->right = remove(node->right, key);
-    else {
+    else
+    {
         if (node->left == nullptr) {
             Node* temp = node->right;
             delete node;
@@ -99,7 +102,6 @@ void BST::clear(Node* node) {
         delete node;
     }
 }
-
 void BST::saveToFile(Node* node, ofstream& file) {
     if (node != nullptr) {
         saveToFile(node->left, file);
@@ -109,19 +111,12 @@ void BST::saveToFile(Node* node, ofstream& file) {
 }
 
 
-Node* BST::findDuplicates(Node* node, unordered_map<string, string>& seen) const
-{
+void BST::findDuplicates(Node* node, const string& key, vector<string>& duplicates) const {
     if (node != nullptr) {
-        findDuplicates(node->left, seen);
-        if (seen.find(node->key) != seen.end())
-        {
-            cout << "Duplicated files: " << node->key << " and " << seen[node->key] << endl;
+        findDuplicates(node->left, key, duplicates);
+        if (node->value == key) {
+            duplicates.push_back(node->key);
         }
-        else
-        {
-            seen[node->key] = node->value;
-        }
-        findDuplicates(node->right, seen);
+        findDuplicates(node->right, key, duplicates);
     }
-        return node;
 }

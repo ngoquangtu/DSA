@@ -2,7 +2,7 @@
 #define BST_H
 
 #include <string>
-#include <unordered_map>
+#include<vector>
 
 using namespace std;
 
@@ -13,7 +13,6 @@ struct Node {
     Node* left;
     Node* right;
 };
-
 class BST {
 public:
     BST();
@@ -22,10 +21,9 @@ public:
     void remove(const string& key);
     string search(const string& key) const;
     Node* getRoot() const;
-    void findDuplicates(unordered_map<string, string>& seen) const;
+    vector<string> findDuplicates(const string& key) const;
     void saveToFile(const string& filename);
     void loadFromFile(const string& filename);
-
 private:
     Node* root;
     Node* insert(Node* node, const string& key, const string& value);
@@ -35,7 +33,7 @@ private:
     void clear(Node* node);
     void saveToFile(Node* node, ofstream& file);
     Node* loadFromFile(ifstream& file);
-    Node* findDuplicates(Node* node, unordered_map<string, string>& seen) const;
+    void findDuplicates(Node* node, const string& key, vector<string>& duplicates) const;
 };
 
 #endif // BST_H

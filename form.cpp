@@ -74,20 +74,18 @@ void Form::on_saveButton_clicked()
 void Form::on_findButton_clicked()
 {
     bst->loadFromFile(fileIndex);
-    unordered_map<string, string> seen;
     QString userInput = ui->findEdit->text();
     string searchString = userInput.toStdString();
-    bst->findDuplicates(seen);
-    if (seen.find(searchString) != seen.end()) {
-        // If it exists, retrieve the duplicate information
-        string duplicateInfo = seen[searchString];
-        QListWidget *listWidget = ui->listWidget;
-        listWidget->clear();
-        // Loop through the "seen" map and add its items to the listWidget
-        for (const auto& pair : seen) {
-            QListWidgetItem *item = new QListWidgetItem(QString::fromStdString(pair.second));
+    vector<string> duplicates = bst->findDuplicates(searchString);
+    QListWidget *listWidget = ui->listWidget;
+    listWidget->clear();
+    if (!duplicates.empty()) {
+        for (const string& duplicate : duplicates) {
+            QListWidgetItem *item = new QListWidgetItem(QString::fromStdString(duplicate));
             listWidget->addItem(item);
         }
+    } else {
+        listWidget->addItem("File has not found or has no duplicates");
     }
 }
 

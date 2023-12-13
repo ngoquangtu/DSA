@@ -29,7 +29,6 @@ private slots:
 
     void on_findButton_clicked();
 
-    void on_listWidget_currentTextChanged(const QString &currentText);
 
 private:
     Ui::Form *ui;
